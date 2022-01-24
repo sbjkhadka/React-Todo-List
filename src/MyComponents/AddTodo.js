@@ -23,11 +23,17 @@ export const AddTodo = (props) => {
   };
   return (
     <div className="container">
-      <h3 className="my-3 text-center">Add Todo</h3>
+      <h3 className="my-3 text-center">
+        {props.isEditing ? (
+          <span className="text-primary">Edit Todo</span>
+        ) : (
+          <span className="text-success">Add Todo</span>
+        )}
+      </h3>
       <form onSubmit={submit}>
         <div className="mb-3">
           <label htmlFor="title" className="form-label">
-            Todo Title
+            Title
           </label>
           <input
             type="text"
@@ -43,7 +49,7 @@ export const AddTodo = (props) => {
         </div>
         <div className="mb-3">
           <label htmlFor="desc" className="form-label">
-            Todo Description
+            Description
           </label>
           <input
             type="text"
@@ -58,9 +64,14 @@ export const AddTodo = (props) => {
         </div>
 
         {props.isEditing ? (
-          <button type="submit" className="btn btn-primary btn-sm">
-            Edit Todo
-          </button>
+          <>
+            <button type="submit" className="btn btn-primary btn-sm mx-1">
+              Edit Todo
+            </button>
+            <button className="btn btn-outline-danger btn-sm mx-1" onClick={() => props.cancelled}>
+              Cancel
+            </button>
+          </>
         ) : (
           <button type="submit" className="btn btn-success btn-sm">
             Add Todo

@@ -57,6 +57,11 @@ function App() {
     }
   };
 
+  const cancelEdit = () => {
+    setIsEditing(false);
+    setCurrentTodo(dummyTodo);
+  };
+
   return (
     <Router>
       <Header title="My Todo List" searchBar={false} />
@@ -70,6 +75,7 @@ function App() {
                 addTodo={addTodo}
                 displayTodo={currentTodo}
                 isEditing={isEditing}
+                cancelled = {cancelEdit}
               />
               <Todos
                 todos={todos}

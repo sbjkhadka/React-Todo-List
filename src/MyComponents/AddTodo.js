@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react/cjs/react.development";
 
 export const AddTodo = (props) => {
-    const [title, setTitle] = useState("title");
-    const [desc, setDesc] = useState("desc");
-    const submit = (e) => {
-        e.preventDefault();
-        if(!title || !desc) {
-            alert("Title or description cannot be blank!")
-        } else {
-            props.addTodo(title, desc);
-        }
-        
+  const [title, setTitle] = useState(props.displayTodo.title);
+  const [desc, setDesc] = useState(props.displayTodo.description);
+  useEffect(() => {
+    setTitle(props.displayTodo.title);
+    setDesc(props.displayTodo.description);
+  }, [props]);
+  const submit = (e) => {
+    e.preventDefault();
+    const todoObject = {
+      sno: props.displayTodo.sno,
+      title,
+      desc
     };
+    if (!title || !desc) {
+      alert("Title or description cannot be blank!");
+    } else {
+      props.addTodo(todoObject);
+    }
+  };
   return (
     <div className="container">
       <h3 className="my-3 text-center">Add Todo</h3>
@@ -49,9 +57,15 @@ export const AddTodo = (props) => {
           />
         </div>
 
-        <button type="submit" className="btn btn-success btn-sm">
-          Add Todo
-        </button>
+        {props.isEditing ? (
+          <button type="submit" className="btn btn-primary btn-sm">
+            Edit Todo
+          </button>
+        ) : (
+          <button type="submit" className="btn btn-success btn-sm">
+            Add Todo
+          </button>
+        )}
       </form>
     </div>
   );

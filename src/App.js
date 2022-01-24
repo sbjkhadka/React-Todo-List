@@ -7,11 +7,17 @@ import React, { useEffect, useState } from "react";
 import { AddTodo } from "./MyComponents/AddTodo";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-
 function App() {
+  const dummyTodo = {
+    sno: 0,
+    title: "Your Title",
+    description: "Your Description",
+  };
   const [todos, setTodos] = useState(
     JSON.parse(localStorage.getItem("todos")) || []
   );
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentTodo, setCurrentTodo] = useState(dummyTodo);
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
@@ -25,13 +31,30 @@ function App() {
     );
   };
 
-  const addTodo = (title, desc) => {
-    const myTodo = {
+  const onEditClick = (todo) => {
+    setIsEditing(true);
+    setCurrentTodo(todo);
+  };
+
+  const addTodo = (todoObject) => {
+    let myTodo = {
       sno: Math.max(...todos.map((o) => o.sno), 0) + 1,
-      title: title,
-      description: desc,
+      title: todoObject.title,
+      description: todoObject.desc,
     };
-    setTodos([...todos, myTodo]);
+    if (isEditing) {
+      myTodo.sno = todoObject.sno;
+      setIsEditing(false);
+      setCurrentTodo(dummyTodo);
+
+      const temp = todos.filter((e) => {
+        return e.sno !== todoObject.sno;
+      });
+
+      setTodos([...temp, myTodo]);
+    } else {
+      setTodos([...todos, myTodo]);
+    }
   };
 
   return (
@@ -39,11 +62,20 @@ function App() {
       <Header title="My Todo List" searchBar={false} />
       <Routes>
         <Route
-          exact path="/"
+          exact
+          path="/"
           element={
             <>
-              <AddTodo addTodo={addTodo} />
-              <Todos todos={todos} onDelete={onDelete} />
+              <AddTodo
+                addTodo={addTodo}
+                displayTodo={currentTodo}
+                isEditing={isEditing}
+              />
+              <Todos
+                todos={todos}
+                onDelete={onDelete}
+                onEditClick={onEditClick}
+              />
             </>
           }
         />

@@ -18,19 +18,44 @@ export const Todos = (props) => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
+                <TableCell>Todo Id</TableCell>
                 <TableCell>Title</TableCell>
                 <TableCell>Description</TableCell>
+                <TableCell align="right">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.todos.map((todo) => {
-                return (
-                  <TableRow>
-                    <TableCell>{todo.title}</TableCell>
-                    <TableCell>{todo.description}</TableCell>
-                  </TableRow>
-                );
-              })}
+              {props.todos
+                .slice(0)
+                .reverse()
+                .map((todo) => {
+                  return (
+                    <TableRow key={todo.sno}>
+                      <TableCell>{todo.sno}</TableCell>
+                      <TableCell>{todo.title}</TableCell>
+                      <TableCell>{todo.description}</TableCell>
+                      <TableCell align="right">
+                        <button
+                          className="btn btn-outline-danger btn-sm mx-1"
+                          onClick={() => {
+                            props.onDelete(todo);
+                          }}
+                        >
+                          Delete
+                        </button>
+
+                        <button
+                          className="btn btn-outline-primary btn-sm mx-1"
+                          onClick={() => {
+                            props.onEditClick(todo);
+                          }}
+                        >
+                          Edit
+                        </button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>

@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { AddTodo } from "./MyComponents/AddTodo";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+
 function App() {
   const [todos, setTodos] = useState(
     JSON.parse(localStorage.getItem("todos")) || []
